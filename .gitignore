@@ -1,0 +1,58 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+.idea
+cmake-build-debug
+
+# Vscode
+.vscode
+
+# Build
+build
+
+# Vim swap file
+*.swp
+
+# log
+log*
+*.log
+
+# binary
+bin
+
+# protobuf
+*.pb.cc
+*.pb.h
+
+# pycache
+__pycache__

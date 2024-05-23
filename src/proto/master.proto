@@ -1,0 +1,139 @@
+// Copyright 2022 HDL
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package AGE.ProtoBuf.Master;
+
+import "base.proto";
+
+option cc_generic_services = true;
+
+message ReadyRequest {
+    required int32 rank = 1;
+    required uint32 role = 2;  // whether the caller is compute worker or cache worker
+}
+message ReadyResponse {
+    required bool success = 1;
+}
+
+message RequestTopoReq {
+    required uint32 role = 1;
+}
+message RequestTopoResp {
+    required bytes data = 1;
+    required bool success = 2;
+}
+
+message RequestWorkerReq {
+    required uint32 client_port = 1;
+}
+message RequestWorkerResp {
+    required bool success = 1;
+    required string host = 2;
+    required uint32 port = 3;
+}
+
+// message RequestGraphPartitionDirReq {
+//     required uint32 partitionId = 1;
+// }
+// message RequestGraphPartitionDirResp {
+//     
+// }
+
+message RequestStrMapReq {}
+message RequestStrMapResp {
+    required bytes data = 1;
+    required bool success = 2;
+}
+
+message RequestAllWorkerReq {}
+message RequestAllWorkerResp {
+    required bool success = 1;
+    repeated string hosts = 2;
+    repeated uint32 ports = 3;
+}
+
+// Generate all random queries
+message RandomQueriesReq {
+    required string config = 1;
+}
+message RandomQueriesResp {
+    required bool success = 1;
+    repeated string seeds = 2;
+}
+
+// Synchronize index among all compute workers
+message SyncIndexReq {
+    required uint32 label = 1;
+    required uint32 prop = 2;
+    required bool isCreate = 3;
+}
+message SyncIndexResp {
+    required bool success = 1;
+}
+
+message CheckReadyReq {
+    required uint32 role = 1;
+}
+message CheckReadyResp {
+    required bool success = 1;
+}
+
+message ThptSendEndReq {
+    required uint32 send_duration = 1;
+    repeated uint32 num_sent_queries = 2;
+}
+message ThptStartReq {
+    required uint32 wait_threshold = 1;  // second
+    required string prefix = 2;
+}
+
+message ConfigReq {
+    required uint32 batch_size = 1;
+    required uint32 message_size = 2;
+}
+
+service Service {
+    // Both Workers will call this if it is ready.
+    rpc Ready(ReadyRequest) returns (ReadyResponse);
+
+    // Compute/Cache Worker will call this for requesting cache/compute worker topology
+    rpc RequestTopo(RequestTopoReq) returns (RequestTopoResp);
+
+    // Worker will request for string map
+    rpc RequestStrMap(RequestStrMapReq) returns (RequestStrMapResp);
+
+    // Client calls this to obtain the designated compute worker
+    rpc RequestWorker(RequestWorkerReq) returns (RequestWorkerResp);
+
+    // Client calls this to obtain the designated compute worker
+    rpc RequestAllWorkers(RequestAllWorkerReq) returns (RequestAllWorkerResp);
+
+    // Client call this to generate all random queries for thpt test
+    rpc GetRandomQueries(RandomQueriesReq) returns (RandomQueriesResp);
+
+    // Compute Worker call this to start synchronization among all workers
+    rpc SyncIndex(SyncIndexReq) returns (SyncIndexResp);
+
+    // Compute/Cache Worker call this to check whether all Cache/Compute workers are ready
+    rpc CheckReady(CheckReadyReq) returns (CheckReadyResp);
+
+    // Thpt client call these rpcs to announce start and end of sending in thpt
+    rpc ThptStart(ThptStartReq) returns (AGE.ProtoBuf.AnnounceResp);
+    rpc ThptSendEnd(ThptSendEndReq) returns (AGE.ProtoBuf.AnnounceResp);
+    rpc ClearThptMonitor(AGE.ProtoBuf.AnnounceReq) returns (AGE.ProtoBuf.AnnounceResp);
+
+    // Client send config change to server
+    rpc Config(ConfigReq) returns (AGE.ProtoBuf.AnnounceResp);
+};

@@ -1,0 +1,26 @@
+[VERTEX]
+person id:INT firstName:STRING lastName:STRING creationDate:STRING locationIP:STRING browserUsed:STRING gender:BOOL birthday:STRING
+comment id:INT creationDate:STRING content:STRING length:INT locationIP:STRING browserUsed:STRING
+post id:INT creationDate:STRING length:INT imageFile:STRING:OPTIONAL title:STRING:OPTIONAL language:STRING:OPTIONAL
+forum id:INT title:STRING
+organisation id:INT name:STRING url:STRING
+place id:INT name:STRING url:STRING
+tag id:INT name:STRING url:STRING
+tagclass id:INT name:STRING url:STRING
+
+[EDGE]
+knows creationDate:STRING REL:ONETOMANY
+likes creationDate:STRING REL:ONETOMANY
+hasCreator REL:MANYTOONE
+isLocatedIn creationDate:STRING REL:ONETOONE
+studyAt classYear:INT REL:ONETOMANY
+workAt workFrom:INT REL:ONETOMANY
+hasInterest REL:ONETOMANY
+hasMember REL:MANYTOONE
+hasModerator REL:ONETOONE
+containerOf REL:ONETOMANY
+hasTag REL:ONETOMANY
+replyOf REL:ONETOONE
+isPartOf REL:ONETOONE
+hasType REL:ONETOONE
+isSubclassOf REL:ONETOONE

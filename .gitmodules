@@ -1,0 +1,9 @@
+[submodule "deps/tbb"]
+	path = deps/tbb
+	url = https://github.com/lych4o/tbb.git
+[submodule "deps/libcypher-parser"]
+	path = deps/libcypher-parser
+	url = https://github.com/cleishm/libcypher-parser.git
+[submodule "deps/incubator-brpc"]
+	path = deps/incubator-brpc
+	url = https://github.com/apache/incubator-brpc.git
